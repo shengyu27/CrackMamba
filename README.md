@@ -1,4 +1,4 @@
-# CrackMamab: Topology-aware Mamba for Crack Segmentation in Structures
+# CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures
 
 Official repository for: CrackMamab: Topology-aware Mamba for Crack Segmentation in Structures
 
