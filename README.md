@@ -1,6 +1,6 @@
 # CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures
 
-Official repository for: CrackMamab: Topology-aware Mamba for Crack Segmentation in Structures
+Official repository for: CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures
 
 ## Notes
 The full code will be made public after the paper is fully accepted.
