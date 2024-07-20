@@ -36,8 +36,11 @@ CrackSeg9K:
 
 We use the same data & processing strategy following [SwinUMamba](https://github.com/JiarunLiu/Swin-UMamba). 
 We downloaded version 2.0 of the dataset and re-screened it, see the file in the folder for the exact dataset split:
+
 `/CrackMamba/dataset/train.txt`
+
 `/CrackMamba/dataset/test.txt`
+
 Download dataset from [here](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EGIEBY) and put them into the data folder. Then preprocess the dataset with following command:
 
 ```shell
