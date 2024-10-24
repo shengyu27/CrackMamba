@@ -1,6 +1,6 @@
 # CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures
 
-Official repository for: CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures
+Official repository for: [CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures](https://www.sciencedirect.com/science/article/pii/S0926580524005818?dgcid=coauthor)
 
 ## Notes
 The full code will be made public after the paper is fully accepted.
@@ -70,6 +70,26 @@ bash scripts/train_Crack.sh
 ```
 
 Here, You can configure the content of the script, such as folder address, dataset number, etc., to train on different datasets.
+
+
+## Citation
+```
+@article{ZUO2024105845,
+title = {Topology-aware mamba for crack segmentation in structures},
+journal = {Automation in Construction},
+volume = {168},
+pages = {105845},
+year = {2024},
+issn = {0926-5805},
+doi = {https://doi.org/10.1016/j.autcon.2024.105845},
+url = {https://www.sciencedirect.com/science/article/pii/S0926580524005818},
+author = {Xin Zuo and Yu Sheng and Jifeng Shen and Yongwei Shan},
+keywords = {Crack segmentation, Mamba, Snake scan, CrackSeg9k, SewerCrack, CHASE_DB1},
+abstract = {CrackMamba, a Mamba-based model, is designed for efficient and accurate crack segmentation for monitoring the structural health of infrastructure. Traditional Convolutional Neural Network (CNN) models struggle with limited receptive fields, and while Vision Transformers (ViT) improve segmentation accuracy, they are computationally intensive. CrackMamba addresses these challenges by utilizing the VMambaV2 with pre-trained ImageNet-1 k weights as the encoder and a newly designed decoder for better performance. To handle the random and complex nature of crack development, a Snake Scan module is proposed to reshape crack feature sequences, enhancing feature extraction. Additionally, the three-branch Snake Conv VSS (SCVSS) block is proposed to target cracks more effectively. Experiments show that CrackMamba achieves state-of-the-art (SOTA) performance on the CrackSeg9k and SewerCrack datasets, and demonstrates competitive performance on the retinal vessel segmentation dataset CHASE_DB1, highlighting its generalization capability.}
+}
+```
+
+
 
 ## Acknowledgements
 
