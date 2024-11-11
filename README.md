@@ -2,9 +2,6 @@
 
 Official repository for: [CrackMamba: Topology-aware Mamba for Crack Segmentation in Structures](https://www.sciencedirect.com/science/article/pii/S0926580524005818?dgcid=coauthor)
 
-## Notes
-The full code will be made public after the paper is fully accepted.
-
 
 ## Installation
 
