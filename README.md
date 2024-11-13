@@ -56,7 +56,7 @@ It's worth noting that the pixel values in mask are only 0 and 1, so they look a
 
 **Pretrained model:** 
 
-You can download the model weights [here]([https://drive.google.com/drive/folders/1D3i-x9mJsgQDucp-zS2hQjHZIeTnBZn6?usp=drive_link](https://drive.google.com/drive/folders/1D3i-x9mJsgQDucp-zS2hQjHZIeTnBZn6?usp=sharing)).
+You can download the model weights [here](https://drive.google.com/drive/folders/1D3i-x9mJsgQDucp-zS2hQjHZIeTnBZn6?usp=drive_link).
 
 ## Training & Evaluate
 
