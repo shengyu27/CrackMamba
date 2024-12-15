@@ -1958,8 +1958,8 @@ def get_crackmamba_from_plans(
         hidden_size=768,
     )
     #
-    if use_pretrain:
-        model = load_pretrained_ckpt(model)
+    #if use_pretrain:
+        #model = load_pretrained_ckpt(model)
 
     return model
 
@@ -1974,6 +1974,6 @@ def get_model():
     )
     #
 
-    model = load_pretrained_ckpt(model)
+    #model = load_pretrained_ckpt(model)
 
     return model
