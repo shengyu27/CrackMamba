@@ -189,20 +189,20 @@ class CrossMerge_Ab_1direction(torch.autograd.Function):
 try:
     import selective_scan_cuda_oflex
 except Exception as e:
-    ...
+    selective_scan_cuda_oflex = None
     # print(f"WARNING: can not import selective_scan_cuda_oflex.", flush=True)
-    # print(e, flush=True)import selective_scan_cuda_core
+    # print(e, flush=True)
 try:
     import selective_scan_cuda_core
 except Exception as e:
-    ...
+    selective_scan_cuda_core = None
     #print(f"WARNING: can not import selective_scan_cuda_core.", flush=True)
     #print(e, flush=True)
 
 try:
     import selective_scan_cuda
 except Exception as e:
-    ...
+    selective_scan_cuda = None
     # print(f"WARNING: can not import selective_scan_cuda.", flush=True)
     # print(e, flush=True)
 
@@ -349,7 +349,25 @@ class SelectiveScanOflex(torch.autograd.Function):
     @torch.cuda.amp.custom_fwd
     def forward(ctx, u, delta, A, B, C, D=None, delta_bias=None, delta_softplus=False, nrows=1, backnrows=1, oflex=True):
         ctx.delta_softplus = delta_softplus
-        out, x, *rest = selective_scan_cuda_oflex.fwd(u, delta, A, B, C, D, delta_bias, delta_softplus, 1, oflex)
+        if selective_scan_cuda_oflex is not None:
+            ctx.backend = "oflex"
+            out, x, *rest = selective_scan_cuda_oflex.fwd(
+                u, delta, A, B, C, D, delta_bias, delta_softplus, 1, oflex
+            )
+        elif selective_scan_cuda_core is not None:
+            ctx.backend = "core"
+            out, x, *rest = selective_scan_cuda_core.fwd(
+                u, delta, A, B, C, D, delta_bias, delta_softplus, 1
+            )
+        elif selective_scan_cuda is not None:
+            # Fall back to the standard CUDA selective scan when the oflex extension
+            # is unavailable. This is slower but keeps inference working.
+            ctx.backend = "cuda"
+            out, x, *rest = selective_scan_cuda.fwd(
+                u, delta, A, B, C, D, None, delta_bias, delta_softplus
+            )
+        else:
+            raise ImportError("No selective scan CUDA backend is available.")
         ctx.save_for_backward(u, delta, A, B, C, D, delta_bias, x)
         return out
     
@@ -359,9 +377,21 @@ class SelectiveScanOflex(torch.autograd.Function):
         u, delta, A, B, C, D, delta_bias, x = ctx.saved_tensors
         if dout.stride(-1) != 1:
             dout = dout.contiguous()
-        du, ddelta, dA, dB, dC, dD, ddelta_bias, *rest = selective_scan_cuda_oflex.bwd(
-            u, delta, A, B, C, D, delta_bias, dout, x, ctx.delta_softplus, 1
-        )
+        if ctx.backend == "oflex":
+            du, ddelta, dA, dB, dC, dD, ddelta_bias, *rest = selective_scan_cuda_oflex.bwd(
+                u, delta, A, B, C, D, delta_bias, dout, x, ctx.delta_softplus, 1
+            )
+        elif ctx.backend == "core":
+            du, ddelta, dA, dB, dC, dD, ddelta_bias, *rest = selective_scan_cuda_core.bwd(
+                u, delta, A, B, C, D, delta_bias, dout, x, ctx.delta_softplus, 1
+            )
+        elif ctx.backend == "cuda":
+            du, ddelta, dA, dB, dC, dD, ddelta_bias, *rest = selective_scan_cuda.bwd(
+                u, delta, A, B, C, D, None, delta_bias, dout, x, None, None, ctx.delta_softplus,
+                False
+            )
+        else:
+            raise RuntimeError(f"Unknown selective scan backend: {ctx.backend}")
         return (du, ddelta, dA, dB, dC, dD, ddelta_bias, None, None, None, None)
 
 
@@ -371,7 +401,6 @@ def selective_scan_flop_jit(inputs, outputs, flops_fn=flops_selective_scan_fn):
     N = inputs[2].type().sizes()[1]
     flops = flops_fn(B=B, L=L, D=D, N=N, with_D=True, with_Z=False)
     return flops
-
 
 
 
